@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Ingredient</title>
+<link rel="stylesheet" href="css/bootstrap.css" />
+<link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="css/loginStyles.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<style>
+input.ng-valid {
+	background-color: lightgreen;
+}
+
+input.ng-dirty.ng-invalid-required, input.ng-dirty.ng-invalid-number {
+	background-color: red;
+}
+
+input.ng-dirty.ng-invalid-min {
+	background-color: yellow;
+}
+</style>
+
+</head>
+
+<body>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('populateCtrl', function($scope, $http, $q) {
+
+			/* Logic that handles controlling your page goes here */
+			$scope.ingredient = {
+				name : '',
+				amount : '',
+			};
+
+			$scope.inventory = [];
+
+			$scope.addIngredient = function() {
+				$scope.success = false;
+				$scope.failure = false;
+				
+				if ($scope.ingredient.amount > 0) {
+					$http.post("/api/v1/ingredients", $scope.ingredient).then(
+							function(response) {
+								$scope.inventory.push($scope.ingredient);
+								$scope.updateInventory();
+
+							}, function(rejection) {
+								$scope.failure = true;
+								$scope.success = false;
+								$scope.duplicate = true;
+								console.error("Error while adding Ingredient!");
+							});
+				}
+				else {
+					console.error("Units must be positive Integer.")
+				}
+			}
+
+			$scope.reset = function() {
+				$scope.ingredient = {
+					name : '',
+					amount : '',
+				};
+				$scope.getInventory();
+				$scope.duplicate = false;
+			}
+
+			$scope.getInventory = function() {
+				$http.get("/api/v1/inventory").then(function(response) {
+					console.log(response.data.ingredients);
+					$scope.inventory = response.data.ingredients;
+				}, function(rejection) {
+					$scope.failure = true;
+					$scope.success = false;
+					console.error("Error while getting Inventory!");
+				});
+			}
+
+			$scope.updateInventory = function() {
+				$http.put("/api/v1/inventory/ingredient", $scope.ingredient)
+						.then(function(response) {
+							$scope.reset();
+						}, function(rejection) {
+							$scope.failure = true;
+							$scope.success = false;
+							console.error("Error while updating Inventory!");
+						});
+			}
+
+		});
+	</script>
+	<div ng-app="myApp" ng-controller="populateCtrl">
+	    <div class="loginForm text-center" style="min-height:75%" id="customerLoginForm">
+			<h1>Add Ingredient</h1>
+			<aside class="mb-4" id="inventory">
+				<h3>Inventory:</h3>
+					<!-- Ingredients will be displayed here -->
+					<div ng-init="getInventory()"></div>
+					<div style= "font-size: 15px;" ng-repeat="ingredients in inventory">{{ingredients.ingredient}}
+						, {{ingredients.amount}}</div>
+			</aside>
+			<form name="addIngredientForm">
+				<label for="ingredient-name">Name:</label> <input type="text"
+					id="ingredient-name" ng-model="ingredient.name" required="0">
+					<div ng-show="duplicate"><p id="error-message" style="color: red;">
+					    Duplicate Ingredient try again</p></div>
+					<br> 
+					<label
+					for="ingredient-amounts">Units:</label> <input type="number"
+					id="ingredient-amounts" ng-model="ingredient.amount" required="0" min="1"><br>
+
+				<button class="btn btn-primary w-100" type="button" ng-click="addIngredient()">Add
+					Ingredient</button>
+			</form>
+			<a href="/managerIndex" class="text-center mb-4 text-dark"
+			style="cursor: pointer"> <i class="fa fa-home fa"></i> Home
+		</a>
+			<p id="error-message" style="color: red;"></p>
+		</div>
+	</div>
+</body>
+</html>
