@@ -1,0 +1,138 @@
+    body {
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        background: linear-gradient(-32deg, #ffffff 50%, #000000 50%);
+    }
+
+    .loginForm {
+        display:grid;
+        justify-content: center;
+        gap: 20px;
+        border: 2px solid lightgray;
+        background-color: white;
+        border-radius: 10px;
+        position: fixed;
+        width: 500px;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        box-shadow: rgba(143, 104, 104, 0.24) 0px 3px 8px;
+    }
+
+    #customerLoginForm {
+        display:grid;
+        justify-content: center;
+        gap: 20px;
+        border: 2px solid lightgray;
+        background-color: white;
+        border-radius: 10px;
+        position: fixed;
+        width: 575px;
+        height: 450px;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        box-shadow: rgba(143, 104, 104, 0.24) 0px 3px 8px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .createAccount {
+        color: gray;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    a {
+        font-weight: bold;
+    }
+
+    u:hover {
+        color: gray;
+    }
+
+    .login-button {
+        width: 300px;
+    }
+
+    .btn-dark:hover {
+        background-color: white;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .loginForm, #customerLoginForm {
+        width: 85%;
+        height: 50%;
+        }
+
+        .login-button, #customerLoginForm{
+            justify-self: center;
+            max-width: 75%;
+            height: 75%;
+        }
+    }
+
+    @media only screen and (max-width: 365px) {
+        .login-button {
+            justify-self: center;
+            max-width: 50%;
+            height: 75%;
+        }
+    }
+
+   .order-btn:hover {
+    background-color: white !important;
+    color: black !important;
+   }
+   
+    .profile-div {
+    display: grid;
+    position: absolute;
+    color:black;
+    top: 15px;
+    left: 10px;
+    gap: 5px;    
+  }
+  
+
+  h4 {
+  position: relative;
+  font-size: 12px !important;
+  }
+  
+  .success-message {
+  	display: flex;
+  	justify-content: center;
+  	color: green;
+    background-color: lightgreen;
+}
+
+.error-message {
+	display: flex;
+  	justify-content: center;
+  	color: white;
+    background-color: lightcoral;
+}
+
+#manager-btn-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    justify-content: center;
+    gap: 10px;
+}
+
+.manager-btn {
+    width: 100%;
+    max-width: 200px;
+}
+
+#inventory, #inventory ul {
+	text-align: left;
+}
